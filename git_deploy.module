@@ -73,7 +73,7 @@ function git_deploy_system_info_alter(array &$info, Extension $file, $type) {
               $tag_preg = '/^(' . $branch_preg . '\d+(?:-[^-]+)?)(-(\d+-)g[0-9a-f]{7})?$/';
             }
             else {
-              $tag_preg = '/^(\d.\d+(?:-[^-]+)?)(-(\d+-)g[0-9a-f]{7})?$/';
+              $tag_preg = '/^(\d\.\d\.\d+(?:-[^-]+)?)(-(\d+-)g[0-9a-f]{7})?$/';
             }
             if (preg_match($tag_preg, $last_tag, $matches)) {
               $tag_found = TRUE;
