@@ -77,7 +77,7 @@ function git_deploy_system_info_alter(array &$info, Extension $file, $type) {
             }
             if (preg_match($tag_preg, $last_tag, $matches)) {
               $tag_found = TRUE;
-              $info['version'] = isset($matches[2]) ? $matches[1] . '.' . $matches[3] . 'dev' : $last_tag;
+              $info['version'] = isset($matches[2]) ? $matches[1] . '+' . $matches[3] . 'dev' : $last_tag;
             }
           }
         }
