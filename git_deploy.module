@@ -39,11 +39,33 @@ function git_deploy_system_info_alter(&$info, $file, $type = NULL) {
     return;
   }
 
+  //if we in subfolder of module, use .git from its parent
+  if (!file_exists($git_dir) && preg_match('/^sites\/all\/modules\/(contrib|custom)/',$git_dir)) {
+    $info_file = preg_replace('/\/([^\/]*)\/\.git$/','/$1/$1.info',$git_dir);
+    if (file_exists($info_file)) {
+      $parent = explode('/',$git_dir,6);
+      $parent[5] = '.git';
+      $git_dir = implode('/',$parent);
+    }
+  }
   // Skip this item if it has no .git directory or no Glip library installed.
   if (!file_exists($git_dir) || !_git_deploy_include_glip()) {
     return;
   }
 
+  //resolve path for git submodule
+  if (is_file($git_dir)) {
+    $git_config = file($git_dir);
+    foreach ($git_config as $config_line) {
+      if (preg_match('/^gitdir:\s/', $config_line)) {
+        $git_dir = trim(preg_replace('/^gitdir:\s/', '', $config_line));
+        $git_dir = preg_replace('/\.\.\//','',$git_dir);
+        // Check if this is a relative path.
+        $git_dir = realpath(DRUPAL_ROOT . '/' . $git_dir);
+        break;
+      }
+    }
+  }
   // Get the project name
   if (empty($info['project'])) {
     $info['project'] = git_deploy_get_project_name($git_dir);
