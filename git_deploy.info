@@ -3,5 +3,5 @@ description = Helps sites that are deployed directly from a Git repositories.
 core = 7.x
 files[] = git_deploy.module
 dependencies[] = libraries
-version = "7.x-1.0"
+version = "7.x-1.x-dev"
 project = "git_deploy"
